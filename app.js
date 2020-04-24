@@ -28,9 +28,24 @@ const addTask = (e) => {
 
   taskList.appendChild(li)
 
+  storeTaskInLocalStorage(taskInput.value)
+
   taskInput.value = ''
 
   e.preventDefault()
+}
+
+const storeTaskInLocalStorage = (taskToStore) => {
+  let tasks
+  if (localStorage.getItem('tasks') === null) {
+    tasks = []
+  } else {
+    tasks = JSON.parse(localStorage.getItem('tasks'))
+  }
+
+  tasks.push(taskToStore)
+
+  localStorage.setItem('tasks', JSON.stringify(tasks))
 }
 
 const removeTask = (e) => {
