@@ -8,6 +8,7 @@ const clearBtn = document.querySelector('.clear-tasks')
 const loadEventListeners = () => {
   form.addEventListener('submit', addTask)
   taskList.addEventListener('click', removeTask)
+  clearBtn.addEventListener('click', clearAll)
 }
 
 const addTask = (e) => {
@@ -36,6 +37,12 @@ const removeTask = (e) => {
   if (e.target.parentElement.classList.contains('delete-item')) {
     if (confirm('Are you sure?'))
       e.target.parentElement.parentElement.remove()
+  }
+}
+
+const clearAll = (e) => {
+  while (taskList.firstChild) {
+    taskList.removeChild(taskList.firstChild)
   }
 }
 
