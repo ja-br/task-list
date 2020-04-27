@@ -20,12 +20,10 @@ const getTasks = () => {
   } else {
     tasks = JSON.parse(localStorage.getItem('tasks'))
   }
-
   tasks.forEach((task) => {
     const li = document.createElement('li')
     li.classList.add('collection-item')
-    li.appendChild(document.createTextNode(task.value))
-
+    li.appendChild(document.createTextNode(task))
     const link = document.createElement('a')
     link.classList.add('delete-item', 'secondary-content')
     link.innerHTML = `<i class='fa fa-remove'></i>`
@@ -76,13 +74,37 @@ const removeTask = (e) => {
   if (e.target.parentElement.classList.contains('delete-item')) {
     if (confirm('Are you sure?'))
       e.target.parentElement.parentElement.remove()
+
+      removeTaskFromLocalStorage(e.target.parentElement.parentElement)
   }
+}
+
+const removeTaskFromLocalStorage = (taskToRemove) => {
+  let tasks
+  if (localStorage.getItem('tasks') === null) {
+    tasks = []
+  } else {
+    tasks = JSON.parse(localStorage.getItem('tasks'))
+  }
+
+  tasks.forEach((task, index)=>{
+    if(taskToRemove.textContent === task)
+      tasks.splice(index, 1);
+  })
+
+  localStorage.setItem('tasks',JSON.stringify(tasks))
 }
 
 const clearAll = (e) => {
   while (taskList.firstChild) {
     taskList.removeChild(taskList.firstChild)
   }
+
+  clearLocalStorage()
+}
+
+const clearLocalStorage = ()=>{
+  localStorage.clear()
 }
 
 const filterTasks = (e) => {
