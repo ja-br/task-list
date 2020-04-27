@@ -5,10 +5,34 @@ const taskList = document.querySelector('.collection')
 const clearBtn = document.querySelector('.clear-tasks')
 
 const loadEventListeners = () => {
+  document.addEventListener('DOMContentLoaded', getTasks)
+
   form.addEventListener('submit', addTask)
   taskList.addEventListener('click', removeTask)
   clearBtn.addEventListener('click', clearAll)
   filter.addEventListener('keyup', filterTasks)
+}
+
+const getTasks = () => {
+  let tasks
+  if (localStorage.getItem('tasks') === null) {
+    tasks = []
+  } else {
+    tasks = JSON.parse(localStorage.getItem('tasks'))
+  }
+
+  tasks.forEach((task) => {
+    const li = document.createElement('li')
+    li.classList.add('collection-item')
+    li.appendChild(document.createTextNode(task.value))
+
+    const link = document.createElement('a')
+    link.classList.add('delete-item', 'secondary-content')
+    link.innerHTML = `<i class='fa fa-remove'></i>`
+    li.appendChild(link)
+
+    taskList.appendChild(li)
+  })
 }
 
 const addTask = (e) => {
